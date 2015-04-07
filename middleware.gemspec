@@ -8,10 +8,10 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/ibsciss/ruby-middleware"
   gem.license       = "MIT"
 
-  gem.add_development_dependency "rake"
-  gem.add_development_dependency "rspec-core", "~> 3.2.0"
-  gem.add_development_dependency "rspec-expectations", "~> 3.2.0"
-  gem.add_development_dependency "rspec-mocks", "~> 3.2.0"
+  gem.add_development_dependency "rake", "~> 1.6"
+  gem.add_development_dependency "rspec-core", "~> 3.2"
+  gem.add_development_dependency "rspec-expectations", "~> 3.2"
+  gem.add_development_dependency "rspec-mocks", "~> 3.2"
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
