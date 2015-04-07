@@ -1,4 +1,3 @@
-require File.expand_path("../../setup", __FILE__)
 require "middleware"
 
 describe Middleware::Runner do
@@ -35,7 +34,7 @@ describe Middleware::Runner do
     env = { :result => [] }
     instance = described_class.new([a, b])
     instance.call(env)
-    env[:result].should == ["A", "B", "B", "A"]
+    expect(env[:result]).to eq ["A", "B", "B", "A"]
   end
 
   it "should call lambdas in the proper order" do
@@ -46,7 +45,7 @@ describe Middleware::Runner do
     instance = described_class.new([a, b])
     instance.call({})
 
-    data.should == ["A", "B"]
+    expect(data).to eq ["A", "B"]
   end
 
   it "passes in arguments if given" do
@@ -65,7 +64,7 @@ describe Middleware::Runner do
     instance = described_class.new([[a, 42]])
     instance.call(env)
 
-    env[:result].should == 42
+    expect(env[:result]).to eq 42
   end
 
   it "passes in a block if given" do
@@ -84,7 +83,7 @@ describe Middleware::Runner do
     instance = described_class.new([[a, nil, block]])
     instance.call(env)
 
-    env[:result].should == 42
+    expect(env[:result]).to eq 42
   end
 
   it "should raise an error if an invalid middleware is given" do
@@ -108,7 +107,7 @@ describe Middleware::Runner do
     instance = described_class.new([a, b])
     instance.call(env)
 
-    data.should == ["a"]
+    expect(data).to eq ["a"]
   end
 
   describe "exceptions" do
@@ -150,7 +149,7 @@ describe Middleware::Runner do
       instance = described_class.new([a, b, c])
       expect { instance.call(env) }.to raise_error
 
-      data.should == ["a", "b", "e"]
+      expect(data).to eq ["a", "b", "e"]
     end
 
     it "should stop propagation if rescued" do
@@ -187,7 +186,7 @@ describe Middleware::Runner do
       instance = described_class.new([a, b, c])
       instance.call(env)
 
-      data.should == ["in_a", "in_b", "in_c", "out_b", "out_a"]
+      expect(data).to eq ["in_a", "in_b", "in_c", "out_b", "out_a"]
     end
   end
 end

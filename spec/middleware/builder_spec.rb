@@ -1,4 +1,3 @@
-require File.expand_path("../../setup", __FILE__)
 require "middleware"
 
 describe Middleware::Builder do
@@ -23,7 +22,7 @@ describe Middleware::Builder do
 
         app.call(data)
 
-        data[:data].should == true
+        expect(data[:data]).to be_truthy
       end
     end
 
@@ -38,7 +37,7 @@ describe Middleware::Builder do
 
         app.call(data)
 
-        data[:data].should == true
+        expect(data[:data]).to be_truthy
       end
     end
   end
@@ -51,7 +50,7 @@ describe Middleware::Builder do
       instance.use proc
       instance.call(data)
 
-      data[:data].should == true
+      expect(data[:data]).to be_truthy
     end
 
     it "should be able to add multiple items" do
@@ -63,8 +62,8 @@ describe Middleware::Builder do
       instance.use proc2
       instance.call(data)
 
-      data[:one].should == true
-      data[:two].should == true
+      expect(data[:one]).to be_truthy
+      expect(data[:two]).to be_truthy
     end
 
     it "should be able to add another builder" do
@@ -81,7 +80,7 @@ describe Middleware::Builder do
 
       # Call the 2nd and verify results
       two.call(data)
-      data[:one].should == true
+      expect(data[:one]).to be_truthy
     end
 
     it "should default the env to `nil` if not given" do
@@ -91,7 +90,7 @@ describe Middleware::Builder do
       instance.use proc
       instance.call
 
-      result.should be
+      expect(result).to be_truthy
      end
   end
 
@@ -101,7 +100,7 @@ describe Middleware::Builder do
       instance.insert(0, appender_proc(2))
       instance.call(data)
 
-      data[:data].should == [2, 1]
+      expect(data[:data]).to eq [2, 1]
     end
 
     it "can insert next to a previous object" do
@@ -111,7 +110,7 @@ describe Middleware::Builder do
       instance.insert(proc2, appender_proc(3))
       instance.call(data)
 
-      data[:data].should == [1, 3, 2]
+      expect(data[:data]).to eq [1, 3, 2]
     end
 
     it "can insert before" do
@@ -119,7 +118,7 @@ describe Middleware::Builder do
       instance.insert_before 0, appender_proc(2)
       instance.call(data)
 
-      data[:data].should == [2, 1]
+      expect(data[:data]).to eq [2, 1]
     end
 
     it "raises an exception if attempting to insert before an invalid object" do
@@ -133,7 +132,7 @@ describe Middleware::Builder do
       instance.insert_after 0, appender_proc(2)
       instance.call(data)
 
-      data[:data].should == [1, 2, 3]
+      expect(data[:data]).to eq [1, 2, 3]
     end
 
     it "raises an exception if attempting to insert after an invalid object" do
@@ -151,7 +150,7 @@ describe Middleware::Builder do
       instance.replace proc1, proc2
       instance.call(data)
 
-      data[:data].should == [2]
+      expect(data[:data]).to eq [2]
     end
 
     it "can replace by index" do
@@ -162,7 +161,7 @@ describe Middleware::Builder do
       instance.replace 0, proc2
       instance.call(data)
 
-      data[:data].should == [2]
+      expect(data[:data]).to eq [2]
     end
   end
 
@@ -175,7 +174,7 @@ describe Middleware::Builder do
       instance.delete proc1
       instance.call(data)
 
-      data[:data].should == [2]
+      expect(data[:data]).to eq [2]
     end
 
     it "can delete by index" do
@@ -186,7 +185,7 @@ describe Middleware::Builder do
       instance.delete 0
       instance.call(data)
 
-      data[:data].should == [2]
+      expect(data[:data]).to eq [2]
     end
   end
 end
