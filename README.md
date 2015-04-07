@@ -5,12 +5,14 @@ of the middleware pattern for Ruby. The middleware pattern is a useful
 abstraction tool in various cases, but is specifically useful for splitting
 large sequential chunks of logic into small pieces.
 
+This library was created by Mitchell Hashimoto, original repository: https://github.com/mitchellh/middleware
+
 ## Installing
 
 Middleware is distributed as a RubyGem, so simply gem install:
 
 ```console
-$ gem install middleware
+$ gem install ibsciss-middleware
 ```
 
 ## A Basic Example
