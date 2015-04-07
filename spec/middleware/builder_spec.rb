@@ -7,7 +7,7 @@ describe Middleware::Builder do
   # This returns a proc that can be used with the builder
   # that simply appends data to an array in the env.
   def appender_proc(data)
-    Proc.new { |env| env[:data] << data }
+    Proc.new { |obj| obj.tap { |env| env[:data] << data }}
   end
 
   context "initialized with a block" do
@@ -55,8 +55,8 @@ describe Middleware::Builder do
 
     it "should be able to add multiple items" do
       data = {}
-      proc1 = Proc.new { |env| env[:one] = true }
-      proc2 = Proc.new { |env| env[:two] = true }
+      proc1 = Proc.new { |env| env.tap { |obj| obj[:one] = true }}
+      proc2 = Proc.new { |env| env.tap { |obj| obj[:two] = true }}
 
       instance.use proc1
       instance.use proc2

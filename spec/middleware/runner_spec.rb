@@ -48,6 +48,15 @@ describe Middleware::Runner do
     expect(data).to eq ["A", "B"]
   end
 
+  it "should let lambdas to change the given argument" do
+    data = []
+    a = lambda { |env| env + 1 }
+    b = lambda { |env| env + 2 }
+
+    instance = described_class.new([a, b])
+    expect(instance.call(1)).to eq 4
+  end
+
   it "passes in arguments if given" do
     a = Class.new do
       def initialize(app, value)
