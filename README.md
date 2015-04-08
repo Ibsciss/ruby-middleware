@@ -23,6 +23,18 @@ Middleware is distributed as a RubyGem, so simply gem install:
 $ gem install ibsciss-middleware
 ```
 
+Or, in your Gemfile:
+
+```
+gem 'ibsciss-middleware', '~> 0.3'
+```
+
+Then, you can add it to your project:
+
+```ruby
+require 'middleware'
+```
+
 ## A Basic Example
 
 Below is a basic example of the library in use. If you don't understand
