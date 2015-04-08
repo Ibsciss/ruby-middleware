@@ -1,3 +1,9 @@
+## 0.3.2
+  - Add CI & Code Climate & Improve documentation
+
+## 0.3.1
+  - Enable lambda to change the given object
+
 ## 0.3.0
   - Apply https://github.com/Ibsciss/ruby-middleware/commit/01f75d8e4137b39ea907f13756f21cba4edffaa7
   - Apply https://github.com/Ibsciss/ruby-middleware/commit/00aa09353f7ee2b801bdb446418a936640ae56d7

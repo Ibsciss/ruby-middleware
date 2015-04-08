@@ -1,7 +1,13 @@
+[![Code Climate](https://codeclimate.com/github/Ibsciss/ruby-middleware/badges/gpa.svg)](https://codeclimate.com/github/Ibsciss/ruby-middleware) 
+
 # Middleware
 
 `middleware` is a library which provides a generalized implementation
-of the middleware pattern for Ruby. The middleware pattern is a useful
+of the [chain of responsibility pattern](http://en.wikipedia.org/wiki/Chain-of-responsibility_pattern) for Ruby.
+
+It is used in `Rack::Builder` or `ActionDispatch::MiddlewareStack` to manage a stack of middlewares. This is a generic implementation for any Ruby project.
+ 
+ The middleware pattern is a useful
 abstraction tool in various cases, but is specifically useful for splitting
 large sequential chunks of logic into small pieces.
 
