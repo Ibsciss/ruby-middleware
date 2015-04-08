@@ -12,6 +12,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "rspec-core", "~> 3.2"
   gem.add_development_dependency "rspec-expectations", "~> 3.2"
   gem.add_development_dependency "rspec-mocks", "~> 3.2"
+  gem.add_development_dependency 'codeclimate-test-reporter', '~> 0.4.7'
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   gem.files         = `git ls-files`.split("\n")
