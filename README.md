@@ -1,7 +1,6 @@
 [![Code Climate](https://codeclimate.com/github/Ibsciss/ruby-middleware/badges/gpa.svg)](https://codeclimate.com/github/Ibsciss/ruby-middleware) 
-[![Build Status](https://semaphoreci.com/api/v1/projects/c5797935-6c93-4596-a8a8-bd45c8c584e9/393201/badge.svg)](https://semaphoreci.com/lilobase/ruby-middleware)
-[![Code Climate](https://codeclimate.com/github/Ibsciss/ruby-middleware/badges/gpa.svg)](https://codeclimate.com/github/Ibsciss/ruby-middleware)
-
+[![Test Coverage](https://codeclimate.com/github/Ibsciss/ruby-middleware/badges/coverage.svg)](https://codeclimate.com/github/Ibsciss/ruby-middleware)
+[![Build Status](https://semaphoreci.com/api/v1/projects/c5797935-6c93-4596-a8a8-bd45c8c584e9/393201/shields_badge.svg)](https://semaphoreci.com/lilobase/ruby-middleware)
 
 # Middleware
 
