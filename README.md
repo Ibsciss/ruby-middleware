@@ -13,7 +13,7 @@ This pattern is used in `Rack::Builder` or `ActionDispatch::MiddlewareStack` to 
 abstraction tool in various cases, but is specifically useful for splitting
 large sequential chunks of logic into small pieces.
 
-This library was created by Mitchell Hashimoto, original repository: https://github.com/mitchellh/middleware
+This is an updated version of the original Mitchell Hashimoto's library: https://github.com/mitchellh/middleware
 
 ## Installing
 
