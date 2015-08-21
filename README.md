@@ -144,13 +144,13 @@ This architecture offers the biggest advantage of letting you enhance the `env` 
 
 ```ruby
 class Greeting
-  def initialize(app, append = nil)
+  def initialize(app, datas = nil)
     @app = app
     @datas = datas
   end
   
   def call(env)
-    env = "#{append} #{env}"
+    env = "#{@datas} #{env}"
     result = @app(env)
     "#{result} !"
   end
@@ -253,7 +253,7 @@ stack.insert_before_each logger
 #### Replace
 
 ```ruby
-# Replace the first middleware
+# Replace the second middleware
 stack.replace(1, SomeOtherMiddleware)
 
 # Replace the Trace middleware
@@ -263,7 +263,7 @@ stack.replace(Trace, SomeOtherMiddleware)
 #### Delete
 
 ```ruby
-# Delete the lambda
+# Delete the second middleware
 stack.delete(1)
 
 # Delete the Trace middleware
