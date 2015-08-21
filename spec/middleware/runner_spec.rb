@@ -49,12 +49,21 @@ describe Middleware::Runner do
   end
 
   it "should let lambdas to change the given argument" do
-    data = []
     a = lambda { |env| env + 1 }
     b = lambda { |env| env + 2 }
 
     instance = described_class.new([a, b])
     expect(instance.call(1)).to eq 4
+  end
+
+  it "passes in arguments to lambda if given" do
+    data = []
+    a = lambda { |env, arg| data << arg }
+
+    instance = described_class.new([[a, 1]])
+    instance.call(nil)
+
+    expect(data).to eq [1]
   end
 
   it "passes in arguments if given" do

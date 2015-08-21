@@ -57,7 +57,7 @@ module Middleware
           # Make it a lambda which calls the item then forwards up
           # the chain.
           lambda do |env|
-            next_middleware.call(klass.call(env))
+            next_middleware.call(klass.call(env, *args))
           end
         else
           raise "Invalid middleware, doesn't respond to `call`: #{klass.inspect}"
