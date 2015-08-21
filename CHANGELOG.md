@@ -1,5 +1,8 @@
 ## 0.3.2
-  - Add CI & Code Climate & Improve documentation
+  - Add CI, Code Climate, Gitter & Improve documentation
+  - Add `insert_after_each` and `insert_before_each` methods
+  - Improve the `inspect` method to a more readable version
+  - Enable lambda to receive additional arguments
 
 ## 0.3.1
   - Enable lambda to change the given object
