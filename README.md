@@ -4,6 +4,8 @@
 
 # Middleware
 
+[![Join the chat at https://gitter.im/Ibsciss/ruby-middleware](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ibsciss/ruby-middleware?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 `Middleware` is a library which provides a generalized implementation
 of the [chain of responsibility pattern](http://en.wikipedia.org/wiki/Chain-of-responsibility_pattern) for Ruby.
 
