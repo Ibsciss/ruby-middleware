@@ -197,4 +197,12 @@ describe Middleware::Builder do
       expect(data[:data]).to eq [2]
     end
   end
+
+  context "debugging" do
+    it "has an inspect method" do
+      instance.use appender_proc(1)
+      instance.use appender_proc(1), 2
+      expect(instance.inspect).to eq '[Proc(), Proc(2)]'
+    end
+  end
 end

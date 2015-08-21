@@ -129,6 +129,12 @@ module Middleware
       to_app.call(env)
     end
 
+    def inspect
+      "[" + stack.reduce([]) { |carry, middleware|
+        carry << "#{middleware[0].class.name}(#{middleware[1].join(', ')})"
+      }.join(', ') + "]"
+    end
+
     protected
 
     # Returns the numeric index for the given middleware object.
@@ -164,5 +170,6 @@ module Middleware
     def to_app
       @runner_class.new(stack.dup)
     end
+
   end
 end
