@@ -231,6 +231,7 @@ stack.insert_after(Trace, SomeOtherMiddleware)
 
 # Insert a new item after the first middleware
 stack.insert_after(0, SomeOtherMiddleware)
+```
 
 #### Insert after each
 
@@ -303,10 +304,28 @@ Note that you can also pass blocks in using the `use` method.
 
 #### Lambda
 
-```
-# Lambda work the same with additional arguments
+Lambda work the same with additional arguments:
+
+```ruby
 Middleware::Builder.new { |b|
   # arrow syntax for lambda construction
   b.use ->(env, msg) { puts msg }, 'some message'
 }.call(1) #will print "some message"
+```
+
+### Debug
+
+You can see the content of a given stack using the `inspect` method
+
+```ruby
+Middleware::Builder.new { |b|
+  b.use Trace
+  b.use Echo, "Hello, World!"
+}.inspect
+```
+
+the output will be
+
+```ruby
+[Trace(), Echo("Hello, World!")]
 ```
