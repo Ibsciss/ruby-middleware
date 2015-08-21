@@ -140,8 +140,7 @@ A basic description of the two methods that a middleware must implement:
     state sent in (defined by the caller, but usually a Hash). This call should also
     call `app.call(env)` at some point to move on.
 
-This architecture offers the biggest advantage of letting you enhance the env variable before passing it to the next middleware, 
-and giving you the abilities to change the returned datas, as follow:
+This architecture offers the biggest advantage of letting you enhance the `env` variable before passing it to the next middleware, and giving you the ability to change the returned data, as follows:
 
 ```ruby
 class Greeting
