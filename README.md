@@ -81,7 +81,6 @@ And the output:
 ```
 
 
-
 ## Middleware
 
 ### What is it?
@@ -123,9 +122,9 @@ class Trace
   end
 
   def call(env)
-    puts "Trace up"
+    puts "Before next middleware execution"
     @app.call(env)
-    puts "Trace down"
+    puts "After next middleware execution"
   end
 end
 ```
@@ -139,14 +138,39 @@ A basic description of the two methods that a middleware must implement:
     state sent in (defined by the caller, but usually a Hash). This call should also
     call `app.call(env)` at some point to move on.
 
+This architecture offers the biggest advantage of letting you enhance the env variable before passing it to the next middleware, 
+and giving you the abilities to change the returned datas, as follow:
+
+```ruby
+class Greeting
+  def initialize(app, append = nil)
+    @app = app
+    @datas = datas
+  end
+  
+  def call(env)
+    env = "#{append} #{env}"
+    result = @app(env)
+    "#{result} !"
+  end
+end
+
+Middleware::Builder.new { |b|
+  b.use Greeting, 'Hello'
+}.call('John') #return "Hello John !"
+```
+
 ### Middleware Lambdas
 
 A middleware can also be a simple lambda. The downside of using a lambda is that
 it only has access to the state on the initial call, there is no "post" step for
-lambdas. A basic example, in the context of a web request:
+lambdas:
 
 ```ruby
-lambda { |env| puts "You requested: #{env["http.request_url"]}" }
+Middleware::Builder.new { |b|
+  b.use lambda { |env| env + 3 }
+  b.use lambda { |env| env * 2 }
+}.call(1) #return 8
 ```
 
 ## Middleware Stacks
@@ -168,10 +192,12 @@ end
 ```
 
 This `stack` variable itself is now a valid middleware and has the same interface,
-so to execute the stack, just call `call` on it:
+so to execute the stack, just call `call` on it, so can compose middleware stack between them:
 
 ```ruby
-stack.call
+Middleware::Builder.new do |d|
+  d.use stack
+end.call()
 ```
 
 The call method takes an optional parameter which is the state to pass into the
@@ -185,15 +211,61 @@ created. Given the `stack` variable created above, we can manipulate it as
 follows. Please imagine that each example runs with the original `stack` variable,
 so that the order of the examples doesn't actually matter:
 
+#### Insert before
+
+```ruby
+# Insert a new item before the Trace middleware
+stack.insert_before Trace, SomeOtherMiddleware
+
+# Insert a new item at the top of the middleware stack
+stack.insert_before 0, SomeOtherMiddleware
+```
+
+#### Insert after
+
 ```ruby
 # Insert a new item after the Trace middleware
 stack.insert_after(Trace, SomeOtherMiddleware)
 
-# Replace the lambda
+# Insert a new item after the first middleware
+stack.insert_after(0, SomeOtherMiddleware)
+
+#### Insert after each
+
+```ruby
+logger = lambda { |env| p env }
+
+# Insert the middleware (can be also a middleware object) after each existing middleware
+stack.insert_after_each logger
+```
+
+#### Insert before each
+
+```ruby
+logger = lambda { |env| p env }
+
+# Insert the middleware (can be also a middleware object) before each existing middleware
+stack.insert_before_each logger
+```
+
+#### Replace
+
+```ruby
+# Replace the first middleware
 stack.replace(1, SomeOtherMiddleware)
 
+# Replace the Trace middleware
+stack.replace(Trace, SomeOtherMiddleware)
+```
+
+#### Delete
+
+```ruby
 # Delete the lambda
 stack.delete(1)
+
+# Delete the Trace middleware
+stack.delete(Trace)
 ```
 
 ### Passing Additional Constructor Arguments
@@ -226,3 +298,13 @@ end
 Then when the stack is called, it will output "Hello, World!"
 
 Note that you can also pass blocks in using the `use` method.
+
+#### Lambda
+
+```
+# Lambda work the same with additional arguments
+Middleware::Builder.new { |b|
+  # arrow syntax for lambda construction
+  b.use ->(env, msg) { puts msg }, 'some message'
+}.call(1) #will print "some message"
+```
