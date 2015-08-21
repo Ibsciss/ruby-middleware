@@ -126,13 +126,22 @@ describe Middleware::Builder do
         to raise_error(RuntimeError)
     end
 
-    it "can insert after" do
+    it "can insert after each" do
       instance.use appender_proc(1)
+      instance.use appender_proc(2)
       instance.use appender_proc(3)
-      instance.insert_after 0, appender_proc(2)
+      instance.insert_after_each appender_proc(9)
       instance.call(data)
+      expect(data[:data]).to eq [1, 9, 2, 9, 3, 9]
+    end
 
-      expect(data[:data]).to eq [1, 2, 3]
+    it "can insert before each" do
+      instance.use appender_proc(1)
+      instance.use appender_proc(2)
+      instance.use appender_proc(3)
+      instance.insert_before_each appender_proc(9)
+      instance.call(data)
+      expect(data[:data]).to eq [9, 1, 9, 2, 9, 3]
     end
 
     it "raises an exception if attempting to insert after an invalid object" do

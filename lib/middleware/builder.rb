@@ -92,6 +92,20 @@ module Middleware
       insert(index + 1, middleware, *args, &block)
     end
 
+    # Inserts a middleware before each middleware object
+    def insert_before_each(middleware, *args, &block)
+      self.stack = stack.reduce([]) do |carry, item|
+        carry.push([middleware, args, block], item)
+      end
+    end
+
+    # Inserts a middleware after each middleware object
+    def insert_after_each(middleware, *args, &block)
+      self.stack = stack.reduce([]) do |carry, item|
+        carry.push(item, [middleware, args, block])
+      end
+    end
+
     # Replaces the given middleware object or index with the new
     # middleware.
     def replace(index, middleware, *args, &block)
@@ -135,6 +149,13 @@ module Middleware
     # @return [Array]
     def stack
       @stack ||= []
+    end
+
+    # you shouldn't use this method
+    #
+    # @return [Array]
+    def stack= stack
+      @stack = stack
     end
 
     # Converts the builder stack to a runnable action sequence.
