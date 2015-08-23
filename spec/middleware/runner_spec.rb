@@ -31,7 +31,7 @@ describe Middleware::Runner do
       end
     end
 
-    env = { :result => [] }
+    env = { result: [] }
     instance = described_class.new([a, b])
     instance.call(env)
     expect(env[:result]).to eq ["A", "B", "B", "A"]

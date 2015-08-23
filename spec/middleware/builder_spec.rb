@@ -1,7 +1,7 @@
 require "middleware"
 
 describe Middleware::Builder do
-  let(:data) { { :data => [] } }
+  let(:data) { { data: [] } }
   let(:instance) { described_class.new }
 
   # This returns a proc that can be used with the builder
