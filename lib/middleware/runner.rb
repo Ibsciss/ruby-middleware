@@ -4,7 +4,7 @@ module Middleware
   # in order, then reversing the order.
   class Runner
     # A middleware which does nothing
-    EMPTY_MIDDLEWARE = lambda { |env| env }
+    EMPTY_MIDDLEWARE = ->(env) { env }
 
     # Build a new middleware runner with the given middleware
     # stack.
@@ -60,7 +60,7 @@ module Middleware
             next_middleware.call(klass.call(env, *args))
           end
         else
-          raise "Invalid middleware, doesn't respond to `call`: #{klass.inspect}"
+          fail "Invalid middleware, doesn't respond to `call`: #{klass.inspect}"
         end
       end
     end

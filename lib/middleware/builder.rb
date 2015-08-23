@@ -37,7 +37,7 @@ module Middleware
     #   in which knows how to run them.
     # @yield [] Evaluated in this instance which allows you to use methods
     #   like {#use} and such.
-    def initialize(opts=nil, &block)
+    def initialize(opts = nil, &block)
       opts ||= {}
       @runner_class = opts[:runner_class] || Runner
 
@@ -55,7 +55,7 @@ module Middleware
     # of being treated as a separate single middleware.
     def flatten
       lambda do |env|
-        self.call(env)
+        call(env)
       end
     end
 
@@ -65,11 +65,11 @@ module Middleware
     #
     # @param [Class] middleware The middleware class
     def use(middleware, *args, &block)
-      if middleware.kind_of?(Builder)
+      if middleware.is_a?(Builder)
         # Merge in the other builder's stack into our own
-        self.stack.concat(middleware.stack)
+        stack.concat(middleware.stack)
       else
-        self.stack << [middleware, args, block]
+        stack << [middleware, args, block]
       end
 
       self
@@ -79,7 +79,7 @@ module Middleware
     # given middleware object.
     def insert(index, middleware, *args, &block)
       index = self.index(index) unless index.is_a?(Integer)
-      raise "no such middleware to insert before: #{index.inspect}" unless index
+      fail "no such middleware to insert before: #{index.inspect}" unless index
       stack.insert(index, [middleware, args, block])
     end
 
@@ -88,7 +88,7 @@ module Middleware
     # Inserts a middleware after the given index or middleware object.
     def insert_after(index, middleware, *args, &block)
       index = self.index(index) unless index.is_a?(Integer)
-      raise "no such middleware to insert after: #{index.inspect}" unless index
+      fail "no such middleware to insert after: #{index.inspect}" unless index
       insert(index + 1, middleware, *args, &block)
     end
 
@@ -125,14 +125,14 @@ module Middleware
     end
 
     # Runs the builder stack with the given environment.
-    def call(env=nil)
+    def call(env = nil)
       to_app.call(env)
     end
 
     def inspect
-      "[" + stack.reduce([]) { |carry, middleware|
+      '[' + stack.reduce([]) do |carry, middleware|
         carry << "#{middleware[0].class.name}(#{middleware[1].join(', ')})"
-      }.join(', ') + "]"
+      end.join(', ') + ']'
     end
 
     protected
@@ -160,9 +160,7 @@ module Middleware
     # you shouldn't use this method
     #
     # @return [Array]
-    def stack= stack
-      @stack = stack
-    end
+    attr_writer :stack
 
     # Converts the builder stack to a runnable action sequence.
     #
@@ -170,6 +168,5 @@ module Middleware
     def to_app
       @runner_class.new(stack.dup)
     end
-
   end
 end
