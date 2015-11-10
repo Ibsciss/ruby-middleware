@@ -37,36 +37,36 @@ describe Middleware::Builder do
 
         app.call(data)
 
-        expect(data[:data]).to be_truthy
+        expect(data[:data]).to eq true
       end
     end
   end
 
   context 'basic `use`' do
-    it 'should add items to the stack and make them callable' do
+    it 'adds items to the stack and make them callable' do
       data = {}
       proc = proc { |env| env[:data] = true }
 
       instance.use proc
       instance.call(data)
 
-      expect(data[:data]).to be_truthy
+      expect(data[:data]).to eq true
     end
 
-    it 'should be able to add multiple items' do
+    it 'is able to add multiple items' do
       data = {}
-      proc1 = proc { |env| env.tap { |obj| obj[:one] = true } }
-      proc2 = proc { |env| env.tap { |obj| obj[:two] = true } }
+      proc1 = ->(env) { env.tap { |obj| obj[:one] = :value_1 } }
+      proc2 = ->(env) { env.tap { |obj| obj[:two] = :value_2 } }
 
       instance.use proc1
       instance.use proc2
       instance.call(data)
 
-      expect(data[:one]).to be_truthy
-      expect(data[:two]).to be_truthy
+      expect(data[:one]).to eq :value_1
+      expect(data[:two]).to eq :value_2
     end
 
-    it 'should be able to add another builder' do
+    it 'can be compose with another builder' do
       data  = {}
       proc1 = proc { |env| env[:one] = true }
 
@@ -80,17 +80,17 @@ describe Middleware::Builder do
 
       # Call the 2nd and verify results
       two.call(data)
-      expect(data[:one]).to be_truthy
+      expect(data[:one]).to eq true
     end
 
-    it 'should default the env to `nil` if not given' do
+    it 'has the env to `nil` if not given' do
       result = false
       proc = proc { |env| result = env.nil? }
 
       instance.use proc
       instance.call
 
-      expect(result).to be_truthy
+      expect(result).to eq true
     end
   end
 
@@ -103,7 +103,7 @@ describe Middleware::Builder do
       expect(data[:data]).to eq [2, 1]
     end
 
-    it 'can insert next to a previous object' do
+    it 'can insert after a previous object' do
       proc2 = appender_proc(2)
       instance.use appender_proc(1)
       instance.use proc2
@@ -113,7 +113,7 @@ describe Middleware::Builder do
       expect(data[:data]).to eq [1, 3, 2]
     end
 
-    it 'can insert before' do
+    it 'can insert before a previous object' do
       instance.use appender_proc(1)
       instance.insert_before 0, appender_proc(2)
       instance.call(data)
@@ -121,7 +121,7 @@ describe Middleware::Builder do
       expect(data[:data]).to eq [2, 1]
     end
 
-    it 'raises an exception if attempting to insert before an invalid object' do
+    it 'raises an exception if attempting to insert before an invalid index' do
       expect { instance.insert 'object', appender_proc(1) }
         .to raise_error(RuntimeError)
     end
@@ -216,18 +216,18 @@ describe Middleware::Builder do
       expect(instance.inspect).to eq 'Middleware[Proc(), Proc(2), Echo(Hi, how are you?)]'
     end
 
-    it 'displays his name in the inspect' do
+    it 'can have a name' do
+      expect(described_class.new(name: 'Name').name).to eq 'Name'
+    end
+
+    it 'displays the name in the inspect' do
       middleware = described_class.new(name: 'Dumb') { |b|
         b.use appender_proc(1)
       }
       expect(middleware.inspect).to eq 'Dumb[Proc()]'
     end
 
-    it "can have a name" do
-      expect(described_class.new(name: 'Name').name).to eq 'Name'
-    end
-
-    it "can have a Logger" do
+    it 'makes use of a Logger' do
       mocked_logger = instance_double(Logger)
       expect(mocked_logger).to receive(:add).exactly(4).times
 

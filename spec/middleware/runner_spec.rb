@@ -1,12 +1,12 @@
 require 'middleware'
 
 describe Middleware::Runner do
-  it 'should work with an empty stack' do
+  it 'works with an empty stack' do
     instance = described_class.new([])
     expect { instance.call({}) }.to_not raise_error
   end
 
-  it 'should call classes in the proper order' do
+  it 'calls classes in the proper order' do
     a = Class.new do
       def initialize(app)
         @app = app
@@ -37,7 +37,7 @@ describe Middleware::Runner do
     expect(env[:result]).to eq %w(A B B A)
   end
 
-  it 'should call lambdas in the proper order' do
+  it 'calls lambdas in the proper order' do
     data = []
     a = ->(_env) { data << 'A' }
     b = ->(_env) { data << 'B' }
@@ -48,7 +48,7 @@ describe Middleware::Runner do
     expect(data).to eq %w(A B)
   end
 
-  it 'should let lambdas to change the given argument' do
+  it 'lets lambdas to change the given argument' do
     a = ->(env) { env + 1 }
     b = ->(env) { env + 2 }
 
@@ -104,11 +104,11 @@ describe Middleware::Runner do
     expect(env[:result]).to eq 42
   end
 
-  it 'should raise an error if an invalid middleware is given' do
+  it 'raises an error if an invalid middleware is given' do
     expect { described_class.new([27]) }.to raise_error(/Invalid middleware/)
   end
 
-  it "should not call middlewares which aren't called" do
+  it "not calls middlewares which aren't called" do
     # A does not call B, so B should never execute
     data = []
     a = Class.new do
@@ -131,7 +131,7 @@ describe Middleware::Runner do
   end
 
   describe 'exceptions' do
-    it 'should propagate the exception up the middleware chain' do
+    it 'propagates the exception up the middleware chain' do
       # This tests a few important properties:
       # * Exceptions propagate multiple middlewares
       #   - C raises an exception, which raises through B to A.
@@ -174,7 +174,7 @@ describe Middleware::Runner do
       expect(data).to eq %w(a b e)
     end
 
-    it 'should stop propagation if rescued' do
+    it 'stops propagation if rescued' do
       # This test mainly tests that if there is a sequence A, B, C, and
       # an exception is raised in C, that if B rescues this, then the chain
       # continues fine backwards.
