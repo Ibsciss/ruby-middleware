@@ -1,3 +1,9 @@
+## 0.4.0
+  - Add a name displayed in the logger & inspect methods
+  - Add a logger middleware
+  - Fixed rubocop offenses
+  - Fix builder#inspect to display class name
+
 ## 0.3.2
   - Add CI, Code Climate, Gitter & Improve documentation
   - Add `insert_after_each` and `insert_before_each` methods

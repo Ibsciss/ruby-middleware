@@ -204,6 +204,12 @@ end.call()
 The call method takes an optional parameter which is the state to pass into the
 initial middleware.
 
+You can optionally set a name, that will be displayed in inspect and for logging purpose, for the current middleware:
+
+```ruby
+Middleware::Builder.new(name: 'MyPersonalMiddleware')
+```
+
 ### Manipulating a Stack
 
 Stacks also provide a set of methods for manipulating the middleware stack. This
@@ -303,7 +309,7 @@ Note that you can also pass blocks in using the `use` method.
 
 #### Lambda
 
-Lambda work the same with additional arguments:
+Lambda work the same, with additional arguments:
 
 ```ruby
 Middleware::Builder.new { |b|
@@ -323,8 +329,50 @@ Middleware::Builder.new { |b|
 }.inspect
 ```
 
-the output will be
+It will output:
 
 ```ruby
-[Trace(), Echo("Hello, World!")]
+Middleware[Trace(), Echo("Hello, World!")]
 ```
+
+_If you have set a name, it will be displayed instead of `Middleware`_.
+
+#### Logging
+
+A built-in logging mechanism is provided, it will output for each provider of the stack:
+
+- The provided arguments
+- The returned values (the first 255 chars) and the time (in milliseconds) elapsed in the call method
+
+To initialize the logging you must provide a valid logger instance to `#inject_logger`.
+
+It is also recommended to give a name to your middleware stack.
+
+```ruby
+require 'logger'
+
+class UpperCaseMiddleware
+  def initialize app
+    @app = app
+  end
+
+  def call env
+    sleep(1)
+    env.upcase
+  end
+end
+
+# Build the middleware:
+Middleware::Builder.new(name: 'MyMiddleware') { |b|
+    b.use UpperCaseMiddleware
+}.inject_logger(Logger.new(STDOUT)).call('a message')
+```
+
+It will output something like:
+
+```
+INFO -- MyMiddleware: UpperCaseMiddleware has been called with: "a message"
+INFO -- MyMiddleware: UpperCaseMiddleware finished in 1001 ms and returned: "A MESSAGE"
+```
+
+_Note: the provided logger instance must respond to `#call(level severity, message, app name)`_
