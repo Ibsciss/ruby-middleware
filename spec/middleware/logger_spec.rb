@@ -39,13 +39,13 @@ describe Middleware::Logger do
 
   describe '#way_out_message' do
     it 'returns a formatted message' do
-      expect(described_class.new(nil, nil).way_out_message('Dumb', 2400, [1, 2])).to eq "Middleware Dumb finished in 2400 ms and returns: [1, 2]\n"
+      expect(described_class.new(nil, nil).way_out_message('Dumb', 2400, [1, 2])).to eq " Dumb finished in 2400 ms and returned: [1, 2]\n"
     end
   end
 
   describe '#way_in_message' do
     it 'returns a formatted message' do
-      expect(described_class.new(nil, nil).way_in_message('Dumb', [1, 2])).to eq "Middleware Dumb has been called with: [1, 2]\n"
+      expect(described_class.new(nil, nil).way_in_message('Dumb', [1, 2])).to eq " Dumb has been called with: [1, 2]\n"
     end
   end
 

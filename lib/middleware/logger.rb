@@ -35,15 +35,15 @@ module Middleware
     end
 
     def way_in_message name, env
-      'Middleware %s has been called with: %s' % [name, pretty_print(env)]
+      ' %s has been called with: %s' % [name, pretty_print(env)]
     end
 
     def way_out_message name, time, value
-      'Middleware %s finished in %.0f ms and returns: %s' % [name, time, pretty_print(value)]
+      ' %s finished in %.0f ms and returned: %s' % [name, time, pretty_print(value)]
     end
 
     def write msg
-      @write_to.add(::Logger::INFO, msg.slice(1, 255), @middleware_name)
+      @write_to.add(::Logger::INFO, msg.slice(0, 255).strip!, @middleware_name)
     end
   end
 end
