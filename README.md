@@ -204,7 +204,7 @@ end.call()
 The call method takes an optional parameter which is the state to pass into the
 initial middleware.
 
-You can optionally set a name, that will be displayed in inspect and for logging purpose, for the current middleware:
+You can optionally set a name, that will be displayed in inspect and for logging purpose:
 
 ```ruby
 Middleware::Builder.new(name: 'MyPersonalMiddleware')

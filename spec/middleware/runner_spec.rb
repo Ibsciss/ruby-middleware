@@ -6,7 +6,7 @@ describe Middleware::Runner do
     expect { instance.call({}) }.to_not raise_error
   end
 
-  it 'calls classes in the proper order' do
+  it 'calls classes in the same order as given' do
     a = Class.new do
       def initialize(app)
         @app = app
