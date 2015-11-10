@@ -213,7 +213,14 @@ describe Middleware::Builder do
       instance.use appender_proc(1)
       instance.use appender_proc(1), 2
       instance.use Echo, 'Hi, how are you?'
-      expect(instance.inspect).to eq '[Proc(), Proc(2), Echo(Hi, how are you?)]'
+      expect(instance.inspect).to eq 'Middleware[Proc(), Proc(2), Echo(Hi, how are you?)]'
+    end
+
+    it 'displays his name in the inspect' do
+      middleware = described_class.new(name: 'Dumb') { |b|
+        b.use appender_proc(1)
+      }
+      expect(middleware.inspect).to eq 'Dumb[Proc()]'
     end
 
     it "can have a name" do

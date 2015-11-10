@@ -137,7 +137,7 @@ module Middleware
     end
 
     def inspect
-      '[' + stack.reduce([]) do |carry, middleware|
+      name+'[' + stack.reduce([]) do |carry, middleware|
         name = middleware[0].is_a?(Proc) ? 'Proc' : middleware[0].name
 
         carry << "#{name}(#{middleware[1].join(', ')})"
