@@ -144,6 +144,12 @@ module Middleware
       end.join(', ') + ']'
     end
 
+    def inject_logger logger
+      insert_before_each Middleware::Logger, logger, name
+
+      self
+    end
+
     protected
 
     # Returns the numeric index for the given middleware object.

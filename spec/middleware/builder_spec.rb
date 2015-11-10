@@ -199,7 +199,15 @@ describe Middleware::Builder do
   end
 
   context 'debugging' do
-    Echo = Class.new
+    class Echo
+      def initialize app
+        @app = app
+      end
+
+      def call env
+        @app.call(env)
+      end
+    end
 
     it 'has an inspect method' do
       instance.use appender_proc(1)
@@ -210,6 +218,17 @@ describe Middleware::Builder do
 
     it "can have a name" do
       expect(described_class.new(name: 'Name').name).to eq 'Name'
+    end
+
+    it "can have a Logger" do
+      mocked_logger = instance_double(Logger)
+      expect(mocked_logger).to receive(:add).exactly(4).times
+
+      described_class.new(name: 'Dumb') { |b|
+        b.use Echo
+        b.use Echo
+      }.inject_logger(mocked_logger)
+       .call()
     end
   end
 
