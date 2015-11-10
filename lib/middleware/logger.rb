@@ -43,7 +43,7 @@ module Middleware
     end
 
     def write msg
-      @write_to.add(::Logger::INFO, msg, @middleware_name)
+      @write_to.add(::Logger::INFO, msg.slice(1, 255), @middleware_name)
     end
   end
 end
