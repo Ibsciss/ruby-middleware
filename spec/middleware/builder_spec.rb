@@ -199,16 +199,7 @@ describe Middleware::Builder do
   end
 
   context 'debugging' do
-    class Echo
-      def initialize(app, message)
-        @app = app
-        @message = message
-      end
-
-      def call(env)
-        @app.call(env)
-      end
-    end
+    Echo = Class.new
 
     it 'has an inspect method' do
       instance.use appender_proc(1)
@@ -216,5 +207,10 @@ describe Middleware::Builder do
       instance.use Echo, 'Hi, how are you?'
       expect(instance.inspect).to eq '[Proc(), Proc(2), Echo(Hi, how are you?)]'
     end
+
+    it "can have a name" do
+      expect(described_class.new(name: 'Name').name).to eq 'Name'
+    end
   end
+
 end
