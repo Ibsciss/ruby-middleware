@@ -19,5 +19,5 @@ Gem::Specification.new do |gem|
   gem.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   gem.name          = 'ibsciss-middleware'
   gem.require_paths = ['lib']
-  gem.version       = '0.3.2'
+  gem.version       = '0.4.0'
 end
