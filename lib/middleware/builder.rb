@@ -1,3 +1,5 @@
+require_relative 'logger'
+
 module Middleware
   # This provides a DSL for building up a stack of middlewares.
   #
@@ -40,8 +42,8 @@ module Middleware
     #   like {#use} and such.
     def initialize(opts = nil, &block)
       opts ||= {}
-      @runner_class = opts[:runner_class] || Runner
-      @middleware_name = opts[:name] || 'Middleware'
+      @runner_class = opts.fetch(:runner_class, Runner)
+      @middleware_name = opts.fetch(:name, 'Middleware')
 
       if block_given?
         if block.arity == 1
@@ -137,10 +139,9 @@ module Middleware
     end
 
     def inspect
-      name+'[' + stack.reduce([]) do |carry, middleware|
+      name+'[' + stack.map do |middleware|
         name = middleware[0].is_a?(Proc) ? 'Proc' : middleware[0].name
-
-        carry << "#{name}(#{middleware[1].join(', ')})"
+        "#{name}(#{middleware[1].join(', ')})"
       end.join(', ') + ']'
     end
 
@@ -173,7 +174,7 @@ module Middleware
     end
 
     # you shouldn't use this method
-    #
+    # used for insert_before|after_each
     # @return [Array]
     attr_writer :stack
 
