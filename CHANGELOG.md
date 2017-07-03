@@ -1,3 +1,10 @@
+## 0.4.2
+  - Update documentation
+  - Fix bug https://github.com/Ibsciss/ruby-middleware/issues/8
+
+## 0.4.1
+  - Simplify the inspect method
+
 ## 0.4.0
   - Add a name displayed in the logger & inspect methods
   - Add a logger middleware

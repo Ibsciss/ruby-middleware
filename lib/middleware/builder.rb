@@ -84,8 +84,7 @@ module Middleware
       self
     end
 
-    # Inserts a middleware at the given index or directly before the
-    # given middleware object.
+    # Inserts a middleware at the given index or directly before the given middleware object.
     def insert(index, middleware, *args, &block)
       index = self.index(index) unless index.is_a?(Integer)
       fail "no such middleware to insert before: #{index.inspect}" unless index
@@ -115,16 +114,12 @@ module Middleware
       end
     end
 
-    # Replaces the given middleware object or index with the new
-    # middleware.
+    # Replaces the given middleware object or index with the new middleware.
     def replace(index, middleware, *args, &block)
-      if index.is_a?(Integer)
-        delete(index)
-        insert(index, middleware, *args, &block)
-      else
-        insert_before(index, middleware, *args, &block)
-        delete(index)
-      end
+      index = self.index index unless index.is_a? Integer
+
+      delete(index)
+      insert(index, middleware, *args, &block)
     end
 
     # Deletes the given middleware object or index

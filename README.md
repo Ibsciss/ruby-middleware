@@ -28,7 +28,7 @@ $ gem install ibsciss-middleware
 Or, in your Gemfile:
 
 ```
-gem 'ibsciss-middleware', '~> 0.3'
+gem 'ibsciss-middleware', '~> 0.4.2'
 ```
 
 Then, you can add it to your project:
@@ -169,8 +169,8 @@ lambdas:
 
 ```ruby
 Middleware::Builder.new { |b|
-  b.use lambda { |env| env + 3 }
-  b.use lambda { |env| env * 2 }
+  b.use -> (env) { env + 3 }
+  b.use -> (env) { env * 2 }
 }.call(1) #return 8
 ```
 
@@ -188,7 +188,7 @@ for building a stack of middlewares:
 ```ruby
 stack = Middleware::Builder.new do |d|
   d.use Trace
-  d.use lambda { |env| puts "LAMBDA!" }
+  d.use ->(env) { puts "LAMBDA!" }
 end
 ```
 
@@ -241,7 +241,7 @@ stack.insert_after(0, SomeOtherMiddleware)
 #### Insert after each
 
 ```ruby
-logger = lambda { |env| p env }
+logger = -> (env) { p env }
 
 # Insert the middleware (can be also a middleware object) after each existing middleware
 stack.insert_after_each logger
@@ -250,7 +250,7 @@ stack.insert_after_each logger
 #### Insert before each
 
 ```ruby
-logger = lambda { |env| p env }
+logger = -> (env) { p env }
 
 # Insert the middleware (can be also a middleware object) before each existing middleware
 stack.insert_before_each logger
