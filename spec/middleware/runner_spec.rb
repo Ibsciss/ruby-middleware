@@ -85,6 +85,27 @@ describe Middleware::Runner do
     expect(env[:result]).to eq 42
   end
 
+  it 'passes in keyword arguments if given' do
+    a = Class.new do
+      def initialize(_app, foo = nil, bar: nil)
+        @foo = foo
+        @bar = bar
+      end
+
+      def call(env)
+        env[:foo] = @foo
+        env[:bar] = @bar
+      end
+    end
+
+    env = {}
+    instance = described_class.new([[a, [42], { bar: 1764 }, nil]])
+    instance.call(env)
+
+    expect(env[:foo]).to eq 42
+    expect(env[:bar]).to eq 1764
+  end
+
   it 'passes in a block if given' do
     a = Class.new do
       def initialize(_app, &block)
@@ -98,7 +119,7 @@ describe Middleware::Runner do
 
     block = proc { 42 }
     env = {}
-    instance = described_class.new([[a, nil, block]])
+    instance = described_class.new([[a, [], {}, block]])
     instance.call(env)
 
     expect(env[:result]).to eq 42

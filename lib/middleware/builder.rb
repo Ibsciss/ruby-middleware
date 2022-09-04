@@ -73,12 +73,12 @@ module Middleware
     # of the middleware.
     #
     # @param [Class] middleware The middleware class
-    def use(middleware, *args, &block)
+    def use(middleware, *args, **kwargs, &block)
       if middleware.is_a?(Builder)
         # Merge in the other builder's stack into our own
         stack.concat(middleware.stack)
       else
-        stack << [middleware, args, block]
+        stack << [middleware, args, kwargs, block]
       end
 
       self
