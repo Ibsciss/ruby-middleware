@@ -4,6 +4,20 @@ describe Middleware::Builder do
   let(:data) { { data: [] } }
   let(:instance) { described_class.new }
 
+  class Foo
+    def initialize app, pos, key:
+      @app = app
+      @pos = pos
+      @key = key
+    end
+
+    def call env
+      env[:pos] = @pos
+      env[:key] = @key
+      @app.call(env)
+    end
+  end
+
   # This returns a proc that can be used with the builder
   # that simply appends data to an array in the env.
   def appender_proc(data)
@@ -51,6 +65,16 @@ describe Middleware::Builder do
       instance.call(data)
 
       expect(data[:data]).to eq true
+    end
+
+    it 'handles positional and keyword arguments' do
+      data = {}
+
+      instance.use Foo, 1, key: 2
+      instance.call(data)
+
+      expect(data[:pos]).to eq 1
+      expect(data[:key]).to eq 2
     end
 
     it 'is able to add multiple items' do
