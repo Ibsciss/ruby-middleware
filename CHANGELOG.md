@@ -1,3 +1,6 @@
+## 0.4.3
+  - Fix Ruby 3 error when keyword argument is passed
+- 
 ## 0.4.2
   - Update documentation
   - Fix bug https://github.com/Ibsciss/ruby-middleware/issues/8
