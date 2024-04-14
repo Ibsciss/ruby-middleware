@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = 'https://github.com/ibsciss/ruby-middleware'
   gem.license       = 'MIT'
 
-  gem.add_development_dependency 'rake', '~> 10.4.2'
+  gem.add_development_dependency 'rake', '>= 12.3.3'
   gem.add_development_dependency 'rspec-core', '~> 3.2'
   gem.add_development_dependency 'rspec-expectations', '~> 3.2'
   gem.add_development_dependency 'rspec-mocks', '~> 3.2'
